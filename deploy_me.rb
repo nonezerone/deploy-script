@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'open3'
+
 OSX_PLATFORM = (/darwin/ =~ RUBY_PLATFORM) != nil
 
 def proceed?(input)
@@ -60,7 +62,7 @@ def setup_initial_osx_settings
 end
 
 def restore_brew_packages
-  `brew bundle`
+  stdout, stderr, status = Open3.capture3("/opt/homebrew/bin/brew bundle")
 end
 
 unless OSX_PLATFORM.nil?
@@ -68,9 +70,11 @@ unless OSX_PLATFORM.nil?
 
   config_repo_url = 'https://github.com/nonezerone/dots.git'
 
+  `git clone --separate-git-dir=$HOME/.dots #{config_repo_url} $HOME/dots-tmp`
+  `cp -a $HOME/dots-tmp/. $HOME`
   `git config --global alias.dots '!git --git-dir=$HOME/.dots/ --work-tree=$HOME'`
   `git dots config status.showUntrackedFiles no`
-  `git clone --separate-git-dir=$HOME/.dots #{config_repo_url} $HOME`
+  `rm -r $HOME/dots-tmp`
 
   if OSX_PLATFORM
     puts 'Set up initial OSX settings? [y/n]'
