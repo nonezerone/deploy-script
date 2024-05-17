@@ -85,5 +85,7 @@ unless OSX_PLATFORM.nil?
 
     setup_initial_osx_settings if proceed?(settings_input)
     restore_brew_packages if proceed?(restoration_input)
+
+    puts 'Done!'
   end
 end
