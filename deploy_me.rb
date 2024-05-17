@@ -62,7 +62,7 @@ def setup_initial_osx_settings
 end
 
 def restore_brew_packages
-  stdout, stderr, status = Open3.capture3("/opt/homebrew/bin/brew bundle")
+  stdout, stderr, status = Open3.capture3('/opt/homebrew/bin/brew bundle')
 end
 
 unless OSX_PLATFORM.nil?
@@ -86,6 +86,6 @@ unless OSX_PLATFORM.nil?
     setup_initial_osx_settings if proceed?(settings_input)
     restore_brew_packages if proceed?(restoration_input)
 
-    puts 'Done!'
   end
+  puts 'Done!'
 end
